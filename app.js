@@ -9,7 +9,14 @@ require("dotenv/config");
 //env
 const api = process.env.API_URL;
 
+//routes
 var indexRouter = require("./routes/index");
+var productRouter = require("./routes/product");
+var categoriesRouter = require("./routes/categories");
+var userRouter = require("./routes/index");
+
+//database
+var Mongodb = require("./database/connectMongo");
 
 const { json } = require("express");
 const bodyParser = require("body-parser");
@@ -18,10 +25,9 @@ const mongoose = require("mongoose");
 
 var app = express();
 
+//helpers
 const authJwt = require("./helper/jwt");
 const errorHandler = require("./helper/error-handler");
-const userRouter =require("./routes/index");
-
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -48,8 +54,9 @@ app.use(userRouter);
 //Router
 //view api
 // http://localhost:3000/api/v1/products
-// app.use(`${api}/products`, productsRoutes);
-// app.use(`${api}/categories`, categoriesRoutes);
+
+app.use(`${api}/products`, productRouter);
+app.use(`${api}/categories`, categoriesRouter);
 // app.use(`${api}/users`, usersRoutes);
 // app.use(`${api}/orders`, orderRoutes);
 
@@ -57,17 +64,7 @@ app.use(userRouter);
 app.use("/", indexRouter);
 
 //connect database
-mongoose
-  .connect(process.env.CONNECT_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Database Connection is ready");
-  })
-  .catch((err) => {
-    console.trace(err);
-  });
+Mongodb();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
