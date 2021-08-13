@@ -7,23 +7,13 @@ const router = express.Router();
 router.post(`/`, async (req, res) => {
   //id thể loại sẽ được thêm sau
 
-  const {
-    ten,
-    gia,
-    kichthuoc,
-    mau,
-    mota,
-    tieude,
-    danhgia,
-    product,
-    categories_id,
-  } = req.body;
+  const { ten, gia, kichthuoc, mota, tieude, danhgia, product, categories_id } =
+    req.body;
 
   let products = new Product({
     ten,
     gia,
     kichthuoc,
-    mau,
     mota,
     tieude,
     danhgia,
@@ -69,17 +59,8 @@ router.get(`/:id`, async (req, res) => {
  * @param {id}
  */
 router.put(`/:id`, async (req, res) => {
-  const {
-    ten,
-    gia,
-    kichthuoc,
-    mau,
-    mota,
-    tieude,
-    danhgia,
-    product,
-    categoies_id,
-  } = req.body;
+  const { ten, gia, kichthuoc, mota, tieude, danhgia, product, categoies_id } =
+    req.body;
 
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).send("Invalid Product Id");
@@ -91,7 +72,6 @@ router.put(`/:id`, async (req, res) => {
       ten,
       gia,
       kichthuoc,
-      mau,
       mota,
       tieude,
       danhgia,

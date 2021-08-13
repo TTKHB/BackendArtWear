@@ -13,6 +13,8 @@ const api = process.env.API_URL;
 var indexRouter = require("./routes/index");
 var productRouter = require("./routes/product");
 var categoriesRouter = require("./routes/categories");
+var CartRouter = require("./routes/Cart");
+
 var userRouter = require("./routes/index");
 
 //database
@@ -57,6 +59,8 @@ app.use(userRouter);
 
 app.use(`${api}/products`, productRouter);
 app.use(`${api}/categories`, categoriesRouter);
+app.use(`${api}/carts`, CartRouter);
+
 // app.use(`${api}/users`, usersRoutes);
 // app.use(`${api}/orders`, orderRoutes);
 

@@ -12,10 +12,7 @@ const productSchema = mongoose.Schema({
     type: Array,
     default: [{ size: "test" }],
   },
-  mau: {
-    type: String,
-    default: "#ff",
-  },
+
   mota: {
     type: String,
     default: "",
