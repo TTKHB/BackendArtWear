@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
  * Lấy tất cả Cart
  */
 router.get("/", async (req, res) => {
-  const cartList = await Cart.find();
+  const cartList = await Cart.find().populate(["user_id", "product_id"]);
 
   if (!cartList) {
     res.status(500).json({

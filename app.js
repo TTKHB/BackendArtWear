@@ -14,6 +14,7 @@ var indexRouter = require("./routes/index");
 var productRouter = require("./routes/product");
 var categoriesRouter = require("./routes/categories");
 var CartRouter = require("./routes/Cart");
+var ReviewsRouter = require("./routes/Review");
 
 var userRouter = require("./routes/index");
 
@@ -60,6 +61,7 @@ app.use(userRouter);
 app.use(`${api}/products`, productRouter);
 app.use(`${api}/categories`, categoriesRouter);
 app.use(`${api}/carts`, CartRouter);
+app.use(`${api}/reviews`, ReviewsRouter);
 
 // app.use(`${api}/users`, usersRoutes);
 // app.use(`${api}/orders`, orderRoutes);
