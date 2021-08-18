@@ -5,7 +5,7 @@ const productSchema = mongoose.Schema({
     type: String,
   },
   gia: {
-    type: String,
+    type: Number,
     default: "",
   },
   kichthuoc: {

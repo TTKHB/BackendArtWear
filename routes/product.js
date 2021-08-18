@@ -5,8 +5,6 @@ const router = express.Router();
 
 //thêm sản phẩm
 router.post(`/`, async (req, res) => {
-  //id thể loại sẽ được thêm sau
-
   const { ten, gia, kichthuoc, mota, tieude, danhgia, product, categories_id } =
     req.body;
 
