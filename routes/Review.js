@@ -38,6 +38,32 @@ router.get("/rating-products", async (req, res) => {
   res.status(200).send(reviews);
 });
 
+
+router.get("/statistic5Star", async (req, res) => {
+  let allStar = {};
+  
+  const countStar = await Review.countDocuments({
+    RatingValue: 5,
+    // product_id: product_id,
+    product_id: "610bf2ca1eab1823344cb345",
+  });  
+
+  
+  for (let i = 0; i < 5; i++) {
+    const countStar = await Review.countDocuments({
+      RatingValue: i+1,
+      // product_id: product_id,
+      product_id: "610bf2ca1eab1823344cb345",
+    });  
+    allStar['NumStar'+(i+1)] = countStar;
+
+  }
+  // JSON.stringify(allStar)
+  res.status(200).send({allStar});
+});
+
+
+
 //đếm số lượng review
 router.get(`/countRating/:count`, async (req, res) => {
   console.log("test");
