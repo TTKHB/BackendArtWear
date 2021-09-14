@@ -10,14 +10,15 @@ require("dotenv/config");
 const api = process.env.API_URL;
 
 //routes
-var indexRouter = require("./routes/index");
+// var indexRouter = require("./routes/index");
 var productRouter = require("./routes/product");
 var categoriesRouter = require("./routes/categories");
 var CartRouter = require("./routes/Cart");
 var ReviewsRouter = require("./routes/Review");
 var OrdersRouter = require("./routes/Orders");
 
-var userRouter = require("./routes/index");
+
+var usersRoutes = require("./routes/User");
 
 //database
 var Mongodb = require("./database/connectMongo");
@@ -49,7 +50,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(userRouter);
+// app.use(userRouter);
 
 //dùng để chặn localhost khi chưa đăng nhập
 // app.use(authJwt());
@@ -65,11 +66,11 @@ app.use(`${api}/carts`, CartRouter);
 app.use(`${api}/reviews`, ReviewsRouter);
 app.use(`${api}/orders`, OrdersRouter);
 
-// app.use(`${api}/users`, usersRoutes);
+app.use(`${api}/users`, usersRoutes);
 // app.use(`${api}/orders`, orderRoutes);
 
 //other
-app.use("/", indexRouter);
+// app.use("/", indexRouter);
 
 //connect database
 Mongodb();

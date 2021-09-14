@@ -12,13 +12,14 @@ exports.createUser = async (req, res) => {
             success: false,
             message: 'Email này đã được sử dụng, hãy thử đăng nhập',
         });
-    const user = User({
+    const user = await User({
         fullname,
         email,
         password,
     });
     await user.save();
-    res.json(user);
+    // res.json(user);
+    res.json({ success: true, user });
 };
 
 //Đăng nhập 
@@ -70,28 +71,28 @@ exports.userSignIn = async (req, res) => {
     }
 
     res.json({
-        // success: true, 
-        // user,
-        // token 
         success: true,
         user: userInfo,
         token,
     })
 
 }
+//SignOut token
+exports.signOut= async(req,res)=>{
+    if(req.headers && req.headers.authorization){
+       const token = req.headers.authorization.split(' ')[1]
+       if(!token){
+           return res.status(401).json({success: false,message:'Authorization Fail'});
+            
+       }
+       const tokens=req.user.tokens;
 
-//SignOut
-exports.signOut = async (req, res) => {
-    if (req.headers && req.headers.authorization) {
-        const token = req.headers.authorization.split(' ')[1]
-        if (!token) {
-            return res.status(401).json({ success: false, message: "Authorization fail!" });
+       const newTokens = tokens.filter(t=>t.token!==token)
 
-        }
-        const tokens = req.user.tokens;
-        const newTokens = tokens.filter(t => t.token !== token);
-        await User.findByIdAndUpdate(req.user._id, { tokens: newTokens })
-        res.json({ success: true, message: "Sign out successFully!" });
-
+       await User.findByIdAndUpdate(req.user._id,{tokens:newTokens})
+       res.json({success: true,message:'Sign out successfully!'})
     }
 }
+
+
+
