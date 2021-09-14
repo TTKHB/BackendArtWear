@@ -98,6 +98,10 @@ router.get(`/get/count`, async (req, res) => {
  * Lấy tất cả Order bằng id
  */
 router.get(`/:id`, async (req, res) => {
+  
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).send("Invalid Orders Id");
+  }
   const order = await Order.findById(req.params.id)
     .populate("user", "name")
     .populate({

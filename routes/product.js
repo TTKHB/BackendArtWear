@@ -2,10 +2,11 @@ const Product = require("../model/product");
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
+var ObjectId = require('mongodb').ObjectId; 
 
 //thêm sản phẩm
 router.post(`/`, async (req, res) => {
-  const { ten, gia, kichthuoc, mota, tieude, danhgia, product, categories_id } =
+  const { ten, gia, kichthuoc, mota, danhgia,ThumbImg, product, categories_id } =
     req.body;
 
   let products = new Product({
@@ -13,9 +14,9 @@ router.post(`/`, async (req, res) => {
     gia,
     kichthuoc,
     mota,
-    tieude,
     danhgia,
     product,
+    ThumbImg,
     categories_id,
   });
 
@@ -40,9 +41,17 @@ router.get(`/`, async (req, res) => {
 
 // tìm bằng product bằng id
 router.get(`/:id`, async (req, res) => {
-  const product = await Product.findById(req.params.id).populate(
-    "categories_id"
-  ); //them populates the loai sau
+  console.log("hello");
+  
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).send("Invalid Prouct Id");
+  }
+
+  const product = await Product.findById(req.params.id).populate("categories_id");
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  console.log("product",product);
+
   if (!product) {
     res.status(500).json({
       success: false,
@@ -57,12 +66,13 @@ router.get(`/:id`, async (req, res) => {
  * @param {id}
  */
 router.put(`/:id`, async (req, res) => {
-  const { ten, gia, kichthuoc, mota, tieude, danhgia, product, categoies_id } =
-    req.body;
-
+  
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).send("Invalid Product Id");
   }
+  const { ten, gia, kichthuoc, mota, danhgia,ThumbImg, product, categoies_id } =
+    req.body;
+
 
   const updatedProduct = await Product.findByIdAndUpdate(
     req.params.id,
@@ -71,9 +81,9 @@ router.put(`/:id`, async (req, res) => {
       gia,
       kichthuoc,
       mota,
-      tieude,
       danhgia,
       product,
+      ThumbImg,
       categoies_id,
     },
     { new: true }
