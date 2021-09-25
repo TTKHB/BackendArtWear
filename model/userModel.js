@@ -16,9 +16,20 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    avatar: Buffer,
-    tokens:[{type: Object}],
-    
+    avatar: String,
+    tokens:[{type: Object}],    
+    phone: {
+        type: String,
+    },
+    sex: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    birthday: {
+        type: String,
+    },
 
 });
 

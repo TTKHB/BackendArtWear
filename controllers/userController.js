@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require("../model/userModel");
+// const sharp = require('sharp');
+// const cloudinary = require('../helper/imageUpload');
 
 //Đăng ký
 exports.createUser = async (req, res) => {
@@ -65,9 +67,14 @@ exports.userSignIn = async (req, res) => {
     await User.findByIdAndUpdate(user._id, { tokens: [...oldTokens, { token, signedAt: Date.now().toString() }] })
 
     const userInfo = {
+        _id:user._id,
         fullname: user.fullname,
         email: user.email,
         avatar: user.avatar ? user.avatar : '',
+        phone:user.phone,
+        sex:user.sex,
+        address:user.address,
+        birthday:user.birthday
     }
 
     res.json({
@@ -93,6 +100,14 @@ exports.signOut= async(req,res)=>{
        res.json({success: true,message:'Sign out successfully!'})
     }
 }
+
+
+
+
+
+
+
+
 
 
 

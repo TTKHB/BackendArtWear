@@ -9,14 +9,14 @@ exports.isAuth = async (req, res, next) => {
       const decode = jwt.verify(token, process.env.secret);
       const user = await User.findById(decode.userId);
       if (!user) {
-        return res.json({ success: false, message: 'unauthorized access!' });
+        return res.json({ success: false, message: 'unauthorized access a!' });
       }
 
       req.user = user;
       next();
     } catch (error) {
       if (error.name === 'JsonWebTokenError') {
-        return res.json({ success: false, message: 'unauthorized access!' });
+        return res.json({ success: false, message: 'unauthorized access b!' });
       }
       if (error.name === 'TokenExpiredError') {
         return res.json({
@@ -28,6 +28,6 @@ exports.isAuth = async (req, res, next) => {
       res.res.json({ success: false, message: 'Internal server error!' });
     }
   } else {
-    res.json({ success: false, message: 'unauthorized access!' });
+    res.json({ success: false, message: 'unauthorized access c!' });
   }
 };
