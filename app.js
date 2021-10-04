@@ -16,7 +16,7 @@ var categoriesRouter = require("./routes/categories");
 var CartRouter = require("./routes/Cart");
 var ReviewsRouter = require("./routes/Review");
 var OrdersRouter = require("./routes/Orders");
-
+var NotificationRouter = require("./routes/Notification");
 
 var usersRoutes = require("./routes/User");
 
@@ -65,6 +65,7 @@ app.use(`${api}/categories`, categoriesRouter);
 app.use(`${api}/carts`, CartRouter);
 app.use(`${api}/reviews`, ReviewsRouter);
 app.use(`${api}/orders`, OrdersRouter);
+app.use(`${api}/notification`, NotificationRouter);
 
 app.use(`${api}/users`, usersRoutes);
 // app.use(`${api}/orders`, orderRoutes);
