@@ -29,6 +29,10 @@ const productSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  ThumbImg: {
+    type: String,
+    default: "",
+  },
   danhgia: {
     //tam thoi de string
     type: String,

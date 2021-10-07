@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 //Thêm một thông báo mới
 router.post("/:id", async (req, res) => {
   let notify = new Notification({
-    title: req.body.name,
+    title: req.body.title,
     img: req.body.image,
     body: req.body.color,
     user_id: req.params.id,
