@@ -15,12 +15,12 @@ router.get("/", async (req, res) => {
   res.status(200).send(DashBoardList);
 });
 
-//Thêm một dashboard moi
+//Thêm một dashboard moi by id the loai
 router.post("/:id", async (req, res) => {
   let dashboard = new DashBoard({
     title: req.body.title,
     Styles: req.body.Styles,
-    theloai_id: req.params.theloai_id,
+    theloai_id: req.params.id,
   });
   dashboard = await dashboard.save();
 
