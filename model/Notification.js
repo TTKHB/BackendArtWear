@@ -10,10 +10,13 @@ const NotificationSchema = mongoose.Schema({
     default: "",
   },
   body: {
-    type: Array,
+    type: String,
     default: "",
   },
-
+  loaitb: {
+    type: String,
+    default: "",
+  },
   date: {
     type: Date,
     default: Date.now(),

@@ -21,6 +21,7 @@ router.post("/:id", async (req, res) => {
     title: req.body.title,
     img: req.body.image,
     body: req.body.color,
+    loaitb: req.body.loaitb,
     user_id: req.params.id,
   });
   notify = await notify.save();
