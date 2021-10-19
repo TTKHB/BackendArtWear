@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 const User = require("../model/userModel");
-// const sharp = require('sharp');
-// const cloudinary = require('../helper/imageUpload');
 
 //Đăng ký
 exports.createUser = async (req, res) => {
