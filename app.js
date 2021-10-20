@@ -18,6 +18,8 @@ var ReviewsRouter = require("./routes/Review");
 var OrdersRouter = require("./routes/Orders");
 var NotificationRouter = require("./routes/Notification");
 var DashboardRouter = require("./routes/DashBoard");
+var FavoriteRouter = require("./routes/Favorite");
+var VoucherRouter = require("./routes/Voucher");
 
 var usersRoutes = require("./routes/User");
 
@@ -68,6 +70,8 @@ app.use(`${api}/reviews`, ReviewsRouter);
 app.use(`${api}/orders`, OrdersRouter);
 app.use(`${api}/notification`, NotificationRouter);
 app.use(`${api}/dashboard`, DashboardRouter);
+app.use(`${api}/favorite`, FavoriteRouter);
+app.use(`${api}/voucher`, VoucherRouter);
 
 app.use(`${api}/users`, usersRoutes);
 // app.use(`${api}/orders`, orderRoutes);

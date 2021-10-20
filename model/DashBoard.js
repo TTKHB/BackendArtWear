@@ -9,10 +9,18 @@ const DashBoardSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  Styles: {
-    type: Array,
-    default: [],
-  },
+  Styles: [
+    {
+      title: {
+        type: String,
+        default: "",
+      },
+      image: {
+        type: String,
+        default: "",
+      },
+    },
+  ],
   theloai_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",

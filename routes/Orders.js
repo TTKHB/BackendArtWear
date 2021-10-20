@@ -9,9 +9,11 @@ var ObjectId = require("mongoose").Types.ObjectId;
  * Lấy tất cả Order va orderitem
  */
 router.get("/", async (req, res) => {
-  const OrderList = await Order.find().populate("user_id", "fullname").sort({
-    dateOrdered: -1,
-  });
+  const OrderList = await Order.find()
+    .populate(["user_id", "orderitems"])
+    .sort({
+      dateOrdered: -1,
+    });
 
   if (!OrderList) {
     res.status(500).json({
@@ -98,7 +100,6 @@ router.get(`/get/count`, async (req, res) => {
  * Lấy tất cả Order bằng id
  */
 router.get(`/:id`, async (req, res) => {
-  
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).send("Invalid Orders Id");
   }

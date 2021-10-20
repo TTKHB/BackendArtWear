@@ -19,11 +19,7 @@ const productSchema = mongoose.Schema({
   },
   product: {
     type: Array,
-    default: [{ mau: "", image: "" }],
-  },
-  tieude: {
-    type: String,
-    default: 0,
+    default: [{ mau: "", image: [] }],
   },
   ngaytao: {
     type: Date,
@@ -33,10 +29,13 @@ const productSchema = mongoose.Schema({
     type: String,
     default: "",
   },
-  danhgia: {
-    //tam thoi de string
-    type: String,
-    default: "",
+  soluong: {
+    type: Number,
+    default: 0,
+  },
+  viewer: {
+    type: Number,
+    default: 0,
   },
   categories_id: {
     type: mongoose.Schema.Types.ObjectId,
