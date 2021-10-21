@@ -41,6 +41,7 @@ router.get('/profile', isAuth, (req, res) => {
        _id:req.user._id,
        fullname:req.user.fullname,
        email:req.user.email,
+       role:req.user.role,
        avatar:req.user.avatar,
        phone:req.user.phone,
        sex:req.user.sex,

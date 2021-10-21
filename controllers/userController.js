@@ -48,26 +48,27 @@ exports.userSignIn = async (req, res) => {
 
         });
 
-    let oldTokens = user.tokens || []
+    // let oldTokens = user.tokens || []
 
-    if (oldTokens.lenght) {
-        oldTokens = oldTokens.filter(t => {
-            //parseInt chuyen ve số nguyên
-            //chia giá trị cho 1000 sẽ ra giá trị tính bằng giây
-            const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000
-            if (timeDiff < 86400) {
-                //Tra ve
-                return t
-            }
-        })
-    }
+    // if (oldTokens.lenght) {
+    //     oldTokens = oldTokens.filter(t => {
+    //         //parseInt chuyen ve số nguyên
+    //         //chia giá trị cho 1000 sẽ ra giá trị tính bằng giây
+    //         const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000
+    //         if (timeDiff < 86400) {
+    //             //Tra ve
+    //             return t
+    //         }
+    //     })
+    // }
 
-    await User.findByIdAndUpdate(user._id, { tokens: [...oldTokens, { token, signedAt: Date.now().toString() }] })
+    // await User.findByIdAndUpdate(user._id, { tokens: [...oldTokens, { token, signedAt: Date.now().toString() }] })
 
     const userInfo = {
         _id:user._id,
         fullname: user.fullname,
         email: user.email,
+        role: user.role,
         avatar: user.avatar ? user.avatar : '',
         phone:user.phone,
         sex:user.sex,
@@ -80,6 +81,7 @@ exports.userSignIn = async (req, res) => {
         user: userInfo,
         token,
     })
+    console.log(token)
 
 }
 //SignOut token
@@ -90,11 +92,10 @@ exports.signOut= async(req,res)=>{
            return res.status(401).json({success: false,message:'Authorization Fail'});
             
        }
-       const tokens=req.user.tokens;
-
-       const newTokens = tokens.filter(t=>t.token!==token)
-
-       await User.findByIdAndUpdate(req.user._id,{tokens:newTokens})
+    //    const tokens=req.user.tokens;
+    //    const newTokens = tokens.filter(t=>t.token!==token)
+    //    await User.findByIdAndUpdate(req.user._id,{tokens:newTokens})
+       await User.findByIdAndUpdate(req.user._id)
        res.json({success: true,message:'Sign out successfully!'})
     }
 }

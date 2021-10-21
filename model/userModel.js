@@ -16,8 +16,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+
+    role: {
+        type: String,
+        default: 'user',  
+    }, 
+
     avatar: String,
-    tokens:[{type: Object}],    
+    // tokens:[{type: Object}],
+
     phone: {
         type: String,
     },
