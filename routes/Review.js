@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
  * Lấy tất cả reviews
  */
 router.get("/", async (req, res) => {
-  const reviews = await Review.find().populate(["reviews_id"]);
+  const reviews = await Review.find().populate(["reviews_id", "product_id"]);
 
   if (!reviews) {
     res.status(500).json({
@@ -15,6 +15,48 @@ router.get("/", async (req, res) => {
     });
   }
   res.status(200).send(reviews);
+});
+
+// tìm bằng reviews bằng userid
+router.get(`/user/:User_id`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.User_id)) {
+    return res.status(400).send("Invalid User Id");
+  }
+
+  const reviews = await Review.find({ UserId: req.params.User_id }).populate(
+    "product_id"
+  );
+
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  if (!reviews) {
+    res.status(500).json({
+      success: false,
+      message: "Reviews not found",
+    });
+  }
+  res.send(reviews);
+});
+
+// tìm bằng reviews bằng product_id
+router.get(`/product/:product_id`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.User_id)) {
+    return res.status(400).send("Invalid User Id");
+  }
+
+  const reviews = await Review.find({
+    product_id: req.params.product_id,
+  }).populate("UserId");
+
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  if (!reviews) {
+    res.status(500).json({
+      success: false,
+      message: "Reviews not found",
+    });
+  }
+  res.send(reviews);
 });
 
 /**
@@ -38,31 +80,28 @@ router.get("/rating-products", async (req, res) => {
   res.status(200).send(reviews);
 });
 
-
 router.get("/statistic5Star", async (req, res) => {
+  const { product_id } = req.query;
+
   let allStar = {};
-  
+
   const countStar = await Review.countDocuments({
     RatingValue: 5,
     // product_id: product_id,
-    product_id: "610bf2ca1eab1823344cb345",
-  });  
+    product_id: product_id,
+  });
 
-  
   for (let i = 0; i < 5; i++) {
     const countStar = await Review.countDocuments({
-      RatingValue: i+1,
+      RatingValue: i + 1,
       // product_id: product_id,
-      product_id: "610bf2ca1eab1823344cb345",
-    });  
-    allStar['NumStar'+(i+1)] = countStar;
-
+      product_id: product_id,
+    });
+    allStar["NumStar" + (i + 1)] = countStar;
   }
   // JSON.stringify(allStar)
-  res.status(200).send({allStar});
+  res.status(200).send({ allStar });
 });
-
-
 
 //đếm số lượng review
 router.get(`/countRating/:count`, async (req, res) => {
