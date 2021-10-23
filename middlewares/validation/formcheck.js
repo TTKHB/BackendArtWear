@@ -43,7 +43,7 @@ exports.userVlidation= (req,res,next)=>{
 }
 
 // Validator check lỗi form đăng nhập
-exports.validateUserSignIn=[
+exports.validateUserSignIn =[
     check('email')
     .trim()
     .isEmail()
@@ -56,3 +56,21 @@ exports.validateUserSignIn=[
     .withMessage('email/ password is required ddd!'),
 ]
 
+// Validator check form reset new pass word
+exports.validateUserReset =[    
+    check('password')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('Password is empty!')
+    .isLength({min:8, max:20})
+    .withMessage('Password must be within 8 to 20 character !'),
+     
+    check('confirmPassword').trim().not().isEmpty().custom((value,{req})=>{
+        if(value !== req.body.password){
+            throw new Error('Both Password must be same!')
+        }
+        return true;
+    })
+    
+]

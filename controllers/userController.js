@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken');
 const User = require("../model/userModel");
+const nodemailer = require('nodemailer')
+const sendgridTransport = require('nodemailer-sendgrid-transport')
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth: {
+        api_key: "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"
+    }
+}))
 
 //Đăng ký
 exports.createUser = async (req, res) => {
@@ -12,14 +19,25 @@ exports.createUser = async (req, res) => {
             success: false,
             message: 'Email này đã được sử dụng, hãy thử đăng nhập',
         });
+
     const user = await User({
         fullname,
         email,
-        password,
+        password
     });
-    await user.save();
-    // res.json(user);
-    res.json({ success: true, user });
+    await user.save()
+        .then(user => {
+            transporter.sendMail({
+                to: user.email,
+                from: "thangly2k1@gmail.com",
+                subject: "Đăng ký thành công",
+                html: "<h1>Chào mừng bạn đến với Art Wear</h1>"
+            })
+            res.json({ success: true, user });
+        })
+        .catch(err => {
+            console.log(err)
+        })
 };
 
 //Đăng nhập 
@@ -31,6 +49,7 @@ exports.userSignIn = async (req, res) => {
             success: false,
             message: 'Không tìm thấy người dùng, với email đã cho'
         })
+
     const isMatch = await user.comparePassword(password)
     if (!isMatch)
         return res.json({
@@ -65,15 +84,15 @@ exports.userSignIn = async (req, res) => {
     // await User.findByIdAndUpdate(user._id, { tokens: [...oldTokens, { token, signedAt: Date.now().toString() }] })
 
     const userInfo = {
-        _id:user._id,
+        _id: user._id,
         fullname: user.fullname,
         email: user.email,
         role: user.role,
         avatar: user.avatar ? user.avatar : '',
-        phone:user.phone,
-        sex:user.sex,
-        address:user.address,
-        birthday:user.birthday
+        phone: user.phone,
+        sex: user.sex,
+        address: user.address,
+        birthday: user.birthday
     }
 
     res.json({
@@ -85,28 +104,53 @@ exports.userSignIn = async (req, res) => {
 
 }
 //SignOut token
-exports.signOut= async(req,res)=>{
-    if(req.headers && req.headers.authorization){
-       const token = req.headers.authorization.split(' ')[1]
-       if(!token){
-           return res.status(401).json({success: false,message:'Authorization Fail'});
-            
-       }
-    //    const tokens=req.user.tokens;
-    //    const newTokens = tokens.filter(t=>t.token!==token)
-    //    await User.findByIdAndUpdate(req.user._id,{tokens:newTokens})
-       await User.findByIdAndUpdate(req.user._id)
-       res.json({success: true,message:'Sign out successfully!'})
+exports.signOut = async (req, res) => {
+    if (req.headers && req.headers.authorization) {
+        const token = req.headers.authorization.split(' ')[1]
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'Authorization Fail' });
+
+        }
+        //    const tokens=req.user.tokens;
+        //    const newTokens = tokens.filter(t=>t.token!==token)
+        //    await User.findByIdAndUpdate(req.user._id,{tokens:newTokens})
+        await User.findByIdAndUpdate(req.user._id)
+        res.json({ success: true, message: 'Sign out successfully!' })
     }
 }
 
 
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body
+    const user = await User.findOne({ email })
+    
+    if (!user)
+        return res.json({
+            success: false,
+            message: 'Không tìm thấy người dùng, với email đã cho'
+        })
 
+    //Token
+    const token = jwt.sign({
+        userId: user._id
+    },
+        process.env.secret,
+        {
+            expiresIn: '1d',
 
+        });
 
+    //else find user, send link reset pass to email 
+    transporter.sendMail({
+        to: user.email,
+        from: "thangly2k1@gmail.com",
+        subject: "Đổi mật khẩu",
+        html: `
+            <p>Bạn đã yêu cầu đặt lại mật khẩu</p>
+            <h5>Bấm vào đây <a href="http://localhost:3001/api/v1/users/resetPassword/${token}">link</a> để đặt lại mật khẩu</h5>
+            `
+    })
+    res.json({ message: "check your email" })
 
-
-
-
-
+}
 
