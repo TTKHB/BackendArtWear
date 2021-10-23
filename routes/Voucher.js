@@ -19,13 +19,13 @@ router.get("/", async (req, res) => {
 //insert voucher
 router.post("/:User_id", async (req, res) => {
   let voucher = new Voucher({
-    User_id: req.params.User_id,
+    User_id: req.body.User_id,
     code: generatedCode(7),
     gioihan: req.body.gioihan,
     sotiengiam: req.body.sotiengiam,
     sudung: req.body.sudung,
-    dateStart: req.params.dateStart,
-    dateEnd: req.params.dateEnd,
+    dateStart: req.body.dateStart,
+    dateEnd: req.body.dateEnd,
   });
   voucher = await voucher.save();
 
