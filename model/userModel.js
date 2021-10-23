@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema({
         default: 'user',
     },
 
-    avatar: String,
+    avatar:{
+        type: String, 
+        default: '',
+    },
+    
     // tokens:[{type: Object}],
 
     phone: {
