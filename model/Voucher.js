@@ -37,4 +37,4 @@ const VouncherSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Vouncher", VouncherSchema);
+module.exports = mongoose.model("Voucher", VouncherSchema);
