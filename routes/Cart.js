@@ -17,6 +17,29 @@ router.get("/", async (req, res) => {
   res.status(200).send(cartList);
 });
 
+// tìm cart bang id user
+router.get(`/user/:userid`, async (req, res) => {
+  console.log("hello");
+
+  if (!mongoose.isValidObjectId(req.params.userid)) {
+    return res.status(400).send("Invalid Cart Id");
+  }
+
+  const carts = await Cart.find({ user_id: req.params.userid }).populate([
+    "product_id",
+    "user_id",
+  ]);
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  if (!carts) {
+    res.status(500).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+  res.send(carts);
+});
+
 /**
  *Them cart
  */
@@ -80,4 +103,5 @@ router.put(`/:id`, async (req, res) => {
 
   res.send(updatedCart);
 });
+
 module.exports = router;

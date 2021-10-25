@@ -38,6 +38,24 @@ router.get(`/`, async (req, res) => {
   res.send(productList);
 });
 
+//tăng lượt xem
+router.put(`/increase_views/:product_id`, async (req, res) => {
+  console.log("test views", req.params.product_id);
+
+  if (!mongoose.isValidObjectId(req.params.product_id)) {
+    return res.status(400).send("Invalid Prouct Id");
+  }
+
+  const products = await Product.findByIdAndUpdate(
+    req.params.product_id,
+    {
+      $inc: { viewer: 1 },
+    },
+    { new: true } //to return the new document
+  );
+  res.json(products);
+});
+
 // tìm bằng product bằng id
 router.get(`/:id`, async (req, res) => {
   console.log("hello");
