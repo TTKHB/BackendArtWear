@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 var ObjectId = require("mongodb").ObjectId;
+var cloudinary = require("../utils/cloudinary");
 
 //thêm sản phẩm
 router.post(`/`, async (req, res) => {
@@ -24,6 +25,20 @@ router.post(`/`, async (req, res) => {
   if (!products) return res.status(500).send("The product cannot be created");
 
   res.send(products);
+});
+
+router.get("/test", async (req, res) => {
+  console.log("test");
+  for (let index = 0; index < 5; index++) {
+    const result = await cloudinary.uploader.upload("", {
+      folder: "ArtWear",
+      use_filename: true,
+    }); //image
+    console.log(
+      "🚀 ~ file: product.js ~ line 33 ~ router.get ~ result",
+      result
+    );
+  }
 });
 
 //lấy tất cả dữ liệu sản phẩm

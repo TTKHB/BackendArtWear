@@ -17,6 +17,26 @@ router.get("/", async (req, res) => {
   res.status(200).send(favorites);
 });
 
+// tìm favorite bang id user
+router.get(`/user/:userid`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.userid)) {
+    return res.status(400).send("Invalid favorite Id");
+  }
+
+  const favorites = await Favorite.find({
+    user_id: req.params.userid,
+  }).populate(["product_id", "user_id"]);
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  if (!favorites) {
+    res.status(500).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+  res.send(favorites);
+});
+
 // search favorite by id
 router.get(`/:id`, async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
