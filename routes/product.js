@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 var ObjectId = require("mongodb").ObjectId;
-var cloudinary = require("../utils/cloudinary");
+// var cloudinary = require("../utils/cloudinary");
 
 //thêm sản phẩm
 router.post(`/`, async (req, res) => {

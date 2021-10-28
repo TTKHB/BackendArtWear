@@ -22,11 +22,11 @@ const userSchema = new mongoose.Schema({
         default: 'user',
     },
 
-    avatar:{
-        type: String, 
+    avatar: {
+        type: String,
         default: '',
     },
-    
+
     // tokens:[{type: Object}],
 
     phone: {
@@ -42,19 +42,12 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
 
-});
-
-userSchema.pre('save', function (next) {
-    // Mã hoá password
-    if (this.isModified('password')) {
-        bcrypt.hash(this.password, 8, (err, hash) => {
-            if (err)
-                return next(err);
-            this.password = hash;
-            next();
-        })
+    resetPasswordLink: {
+        data: String,
+        default: '',
     }
-})
+
+});
 
 // So sánh password
 userSchema.methods.comparePassword = async function (password) {
@@ -68,7 +61,6 @@ userSchema.methods.comparePassword = async function (password) {
 
     }
 }
-
 
 //Toi muon email phai la duy nhat trong database(Khong duoc trung email)
 userSchema.statics.isThisEmailInUse = async function (email) {
