@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs')
 const User = require("../model/userModel");
 const nodemailer = require('nodemailer')
 
@@ -28,7 +29,7 @@ exports.createUser = async (req, res) => {
     const user = await User({
         fullname,
         email,
-        password
+        password: bcrypt.hashSync(req.body.password, 8),
     });
     await user.save()
         .then(user => {
@@ -124,7 +125,6 @@ exports.signOut = async (req, res) => {
     }
 }
 
-
 exports.forgotPassword = async (req, res) => {
     const { email } = req.body
     const user = await User.findOne({ email })
@@ -135,7 +135,6 @@ exports.forgotPassword = async (req, res) => {
             message: 'Không tìm thấy người dùng, với email đã cho'
         })
 
-    //Token
     const token = jwt.sign({
         userId: user._id
     },
@@ -144,6 +143,8 @@ exports.forgotPassword = async (req, res) => {
             expiresIn: '1d',
 
         });
+
+    await user.updateOne({resetPasswordLink:token})   
 
     //else find user, send link reset pass to email 
     transporter.sendMail({
@@ -156,6 +157,19 @@ exports.forgotPassword = async (req, res) => {
             `
     })
     res.json({ message: "check your email" })
-
 }
 
+exports.resetPassword = async (req, res) => {
+    const {token, password} = req.body
+    const user = await User.findOne({ resetPasswordLink: token })
+    console.log(user)
+    if(user){
+        const hashPassword = await bcrypt.hash(password,8)
+        user.password= hashPassword
+        await user.save()
+        return res.json({
+            success: true,
+            message: 'hahaha',
+        });
+    }
+}

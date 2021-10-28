@@ -7,7 +7,8 @@ const {
   createUser, 
   userSignIn, 
   signOut, 
-  forgotPassword 
+  forgotPassword,
+  resetPassword,
 } = require("../controllers/userController");
 // Import file check loi dang ki, dang nhap
 const { 
@@ -109,19 +110,10 @@ router.get("/:id", async (req, res) => {
 });
 
 //forgot-Password (send link email)
-router.post('/forgot-Password', forgotPassword);
+router.put('/forgot-Password', forgotPassword);
 
-//Update new Password (using react js front end)
-router.post('/new-Password', validateUserReset, userVlidation, (req, res) => {
-  User.findByIdAndUpdate(req.body.id, {
-    password: bcrypt.hashSync(req.body.password, 8),
-  }).then(data => {
-    console.log(data)
-    res.send(data)
-  }).catch(err => {
-    console.log("error", err)
-  })
-})
+//resetPassword (doi mat khau)
+router.put('/new-Password', resetPassword);
 
 
 
