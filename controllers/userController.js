@@ -1,12 +1,17 @@
 const jwt = require('jsonwebtoken');
 const User = require("../model/userModel");
 const nodemailer = require('nodemailer')
-const sendgridTransport = require('nodemailer-sendgrid-transport')
-const transporter = nodemailer.createTransport(sendgridTransport({
+
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    requireTLS: true,
     auth: {
-        api_key: process.env.SENDGRID_API
-    }
-}))
+        user: 'thangly2k1@gmail.com', // generated ethereal user
+        pass: 'zzThang_77bay_Ly', // generated ethereal password
+    },
+});
 
 //Đăng ký
 exports.createUser = async (req, res) => {
@@ -123,7 +128,7 @@ exports.signOut = async (req, res) => {
 exports.forgotPassword = async (req, res) => {
     const { email } = req.body
     const user = await User.findOne({ email })
-    
+
     if (!user)
         return res.json({
             success: false,
