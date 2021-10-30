@@ -98,4 +98,27 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+/**
+ * remove favorite
+ *@param {id}
+ */
+router.delete("/product/:product_id", (req, res) => {
+  Favorite.deleteOne({ product_id: req.params.product_id })
+    .then((favorite) => {
+      if (favorite) {
+        return res.status(200).json({
+          success: true,
+          message: "the favorite is deleted!",
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "favorite not found!" });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).json({ success: false, error: err });
+    });
+});
+
 module.exports = router;
