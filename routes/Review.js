@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
       success: false,
     });
   }
+
   res.status(200).send(reviews);
 });
 

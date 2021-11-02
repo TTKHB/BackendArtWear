@@ -20,6 +20,11 @@ var NotificationRouter = require("./routes/Notification");
 var DashboardRouter = require("./routes/DashBoard");
 var FavoriteRouter = require("./routes/Favorite");
 var VoucherRouter = require("./routes/Voucher");
+var HotRouter = require("./routes/Hot/Hot");
+var LikeRouter = require("./routes/Hot/like");
+var CommentRouter = require("./routes/Hot/comment");
+var CommentLikeRouter = require("./routes/Hot/comment_like");
+var CommentReplyRouter = require("./routes/Hot/comment_reply");
 
 var usersRoutes = require("./routes/User");
 
@@ -73,7 +78,17 @@ app.use(`${api}/dashboard`, DashboardRouter);
 app.use(`${api}/favorite`, FavoriteRouter);
 app.use(`${api}/voucher`, VoucherRouter);
 
+//hots
+app.use(`${api}/hot`, HotRouter);
+app.use(`${api}/like`, LikeRouter);
+
+//comment
+app.use(`${api}/comment`, CommentRouter);
+app.use(`${api}/comment_like`, CommentLikeRouter);
+app.use(`${api}/comment_reply`, CommentReplyRouter);
+
 app.use(`${api}/users`, usersRoutes);
+
 // app.use(`${api}/orders`, orderRoutes);
 
 //other

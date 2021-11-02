@@ -119,6 +119,8 @@ router.delete("/product/:product_id", (req, res) => {
     .catch((err) => {
       return res.status(500).json({ success: false, error: err });
     });
+
+    
 });
 
 module.exports = router;
