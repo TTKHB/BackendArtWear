@@ -42,7 +42,26 @@ router.get(`/:id`, async (req, res) => {
   res.send(likes);
 });
 
-// tìm bằng like bằng like_id
+// tìm bằng like bằng userid and hotid
+router.get(`/hot/user`, async (req, res) => {
+  const { user_id, hot_id } = req.query;
+  console.log("hello");
+  const likes = await Like.find({
+    user_id,
+    hot_id,
+  }).populate(["hot_id", "user_id"]);
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  if (!likes) {
+    res.status(500).json({
+      success: false,
+      message: "Like not found",
+    });
+  }
+  res.send(likes);
+});
+
+// tìm bằng like bằng hot_id
 router.get(`/hot/:id`, async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).send("Invalid hot Id");
