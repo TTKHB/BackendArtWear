@@ -3,12 +3,21 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 var ObjectId = require("mongodb").ObjectId;
-// var cloudinary = require("../utils/cloudinary");
+var cloudinary = require("../utils/cloudinary");
 
 //thêm sản phẩm
 router.post(`/`, async (req, res) => {
-  const { ten, gia, kichthuoc, mota, soluong, ThumbImg, categories_id } =
-    req.body;
+  const {
+    ten,
+    gia,
+    kichthuoc,
+    mota,
+    soluong,
+    product,
+    ThumbImg,
+    categories_id,
+  } = req.body;
+  let productHanldle = [];
 
   let products = new Product({
     ten,
@@ -17,6 +26,7 @@ router.post(`/`, async (req, res) => {
     mota,
     ThumbImg,
     soluong,
+    product,
     categories_id,
   });
 

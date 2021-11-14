@@ -42,6 +42,46 @@ router.get(`/:id`, async (req, res) => {
   res.send(likes);
 });
 
+// tìm bằng like bằng like_id
+router.get(`/hot/:id`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).send("Invalid hot Id");
+  }
+
+  const likes = await Like.find({ hot_id: req.params.id }).populate([
+    "hot_id",
+    "user_id",
+  ]);
+  // const product = await Product.findOne({_id:req.params.id}).populate("categories_id");
+
+  console.log("product", likes);
+
+  if (!likes) {
+    res.status(500).json({
+      success: false,
+      message: "Like not found",
+    });
+  }
+  res.send(likes);
+});
+
+// tìm bằng like bằng userid
+router.get(`/user/:userid`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.userid)) {
+    return res.status(400).send("Invalid user id");
+  }
+
+  const likes = await Like.find({ user_id: req.params.userid });
+
+  if (!likes) {
+    res.status(500).json({
+      success: false,
+      message: "Like not found",
+    });
+  }
+  res.send(likes);
+});
+
 /**
  * Lấy lượt lại của bài viết đó băng hot_id
  */
