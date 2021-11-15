@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 //lay tat ca comment_like
 router.get(`/`, async (req, res) => {
-  const commentLikeList = await Comment.find().populate(["hot_id"]);
+  const commentLikeList = await Comment.find().populate(["hot_id", "user_id"]);
 
   if (!commentLikeList) {
     res.status(500).json({
