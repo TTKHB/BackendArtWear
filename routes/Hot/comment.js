@@ -15,6 +15,28 @@ router.get(`/`, async (req, res) => {
   res.send(commentLikeList);
 });
 
+// get all comment by hot_id
+router.get(`/hots/:id`, async (req, res) => {
+  console.log("hello");
+
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).send("Invalid Comment Id");
+  }
+
+  const comments = await Comment.find({ hot_id: req.params.id }).populate([
+    "hot_id",
+    "user_id",
+  ]);
+
+  if (!comments) {
+    res.status(500).json({
+      success: false,
+      message: "Comment not found",
+    });
+  }
+  res.send(comments);
+});
+
 //thêm comment
 router.post(`/`, async (req, res) => {
   const { hot_id, user_id, comment } = req.body;
