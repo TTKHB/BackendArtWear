@@ -13,13 +13,12 @@ const CommentSchema = mongoose.Schema({
   },
   dateCreated: {
     type: Date,
-    default: Date.now(),
-    required: true,
+    default: Date.now,
   },
   comment: {
     type: String,
     default: "",
-    required: String,
+    required: true,
   },
 });
 

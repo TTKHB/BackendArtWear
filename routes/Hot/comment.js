@@ -23,10 +23,9 @@ router.get(`/hots/:id`, async (req, res) => {
     return res.status(400).send("Invalid Comment Id");
   }
 
-  const comments = await Comment.find({ hot_id: req.params.id }).populate([
-    "hot_id",
-    "user_id",
-  ]);
+  const comments = await Comment.find({ hot_id: req.params.id })
+    .populate(["hot_id", "user_id"])
+    .sort({ dateCreated: 1 });
 
   if (!comments) {
     res.status(500).json({

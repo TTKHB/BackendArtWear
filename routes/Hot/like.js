@@ -110,12 +110,8 @@ router.get(`/numberlike/:hot_id`, async (req, res) => {
   }
 
   const likes = await Like.find({ hot_id: req.params.hot_id });
-  console.log("🚀 ~ file: like.js ~ line 52 ~ router.get ~ likes", likes);
   const countLike = likes.length;
-  console.log(
-    "🚀 ~ file: like.js ~ line 54 ~ router.get ~ countLike",
-    countLike
-  );
+
   //   const productCount = await Product.countDocuments((count) => count);
 
   if (!countLike) {
@@ -136,6 +132,7 @@ router.post("/", async (req, res) => {
   let likes = new Like({
     user_id: req.body.user_id,
     hot_id: req.body.hot_id,
+    dateCreated: Date.now(),
   });
   likes = await likes.save();
 
