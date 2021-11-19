@@ -171,6 +171,7 @@ router.post(`/`, async (req, res) => {
     status: req.body.status,
     phone: req.body.phone,
     totalPrice: totalPrice,
+    totalFinalPrice:req.body.totalFinalPrice,
     user_id: req.body.user_id,
   });
 
@@ -251,5 +252,29 @@ router.delete("/:id", (req, res) => {
       });
     });
 });
+
+/**
+ *tìm sản phẩm người dùng đã đặt (ThangLy test code)
+ *@params{userid}
+ */
+router.get(`/get/userorderss/:userid`, async (req, res) => {
+  const userOrderList = await Order.find({ user_id: req.params.userid })
+  .populate("user", "name")
+  .populate({
+    path: "orderitems",
+    populate: {
+      path: "product",
+      populate: "categories_id",
+    },
+  });
+
+  if (!userOrderList) {
+    res.status(500).json({ success: false });
+  }
+  res.send(userOrderList);
+});
+
+
+
 
 module.exports = router;
