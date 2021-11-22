@@ -49,6 +49,10 @@ const orderSchema = mongoose.Schema({
     type: Number,
     default: "",
   },
+  lydohuy: {
+    type: String,
+    default: "",
+  },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

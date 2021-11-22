@@ -173,6 +173,7 @@ router.post(`/`, async (req, res) => {
     priceVoucher:req.body.priceVoucher,
     totalPrice: totalPrice,
     totalFinalPrice:req.body.totalFinalPrice,
+    lydohuy:req.body.lydohuy,
     user_id: req.body.user_id,
   });
 
@@ -192,6 +193,27 @@ router.put("/:id", async (req, res) => {
     req.params.id,
     {
       status: req.body.status,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!order) return res.status(400).send("the order cannot be created!");
+
+  res.send(order);
+});
+
+/**
+ * update trạng thái huỷ (5) và lý do
+ * @params {id} of Orders
+ */
+ router.put("/cancel/:id", async (req, res) => {
+  const order = await Order.findByIdAndUpdate(
+    req.params.id,
+    {
+      status: req.body.status,
+      lydohuy:req.body.lydohuy,
     },
     {
       new: true,
