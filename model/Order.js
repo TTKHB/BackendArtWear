@@ -37,6 +37,10 @@ const orderSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  priceVoucher: {
+    type: Number,
+    default: "",
+  },
   totalPrice: {
     type: Number,
     default: "",
