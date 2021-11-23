@@ -169,6 +169,7 @@ router.post(`/`, async (req, res) => {
     country: req.body.country,
     city: req.body.city,
     status: req.body.status,
+    fullname: req.body.fullname,
     phone: req.body.phone,
     priceVoucher:req.body.priceVoucher,
     totalPrice: totalPrice,
