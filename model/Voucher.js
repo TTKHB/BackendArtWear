@@ -11,6 +11,21 @@ const VouncherSchema = mongoose.Schema({
     ref: "User",
     required: true,
   },
+  ten: {
+    type: String,
+    default: "",
+    require: true,
+  },
+  title: {
+    type: String,
+    default: "",
+    require: true,
+  },
+  image: {
+    type: String,
+    default: "",
+    require: true,
+  },
   gioihan: {
     type: Number,
     default: "",

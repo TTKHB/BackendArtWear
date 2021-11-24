@@ -33,12 +33,28 @@ const orderSchema = mongoose.Schema({
     type: String,
     default: 0,
   },
+  fullname: {
+    type: String,
+    default: "",
+  },
   phone: {
     type: String,
     default: "",
   },
+  priceVoucher: {
+    type: Number,
+    default: "",
+  },
   totalPrice: {
     type: Number,
+    default: "",
+  },
+  totalFinalPrice: {
+    type: Number,
+    default: "",
+  },
+  lydohuy: {
+    type: String,
     default: "",
   },
   user_id: {
