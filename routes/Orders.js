@@ -185,10 +185,10 @@ router.post(`/`, async (req, res) => {
     status: req.body.status,
     fullname: req.body.fullname,
     phone: req.body.phone,
-    priceVoucher:req.body.priceVoucher,
+    priceVoucher: req.body.priceVoucher,
     totalPrice: totalPrice,
-    totalFinalPrice:req.body.totalFinalPrice,
-    lydohuy:req.body.lydohuy,
+    totalFinalPrice: req.body.totalFinalPrice,
+    lydohuy: req.body.lydohuy,
     user_id: req.body.user_id,
   });
 
@@ -223,12 +223,12 @@ router.put("/:id", async (req, res) => {
  * update trạng thái huỷ (5) và lý do
  * @params {id} of Orders
  */
- router.put("/cancel/:id", async (req, res) => {
+router.put("/cancel/:id", async (req, res) => {
   const order = await Order.findByIdAndUpdate(
     req.params.id,
     {
       status: req.body.status,
-      lydohuy:req.body.lydohuy,
+      lydohuy: req.body.lydohuy,
     },
     {
       new: true,
@@ -290,29 +290,5 @@ router.delete("/:id", (req, res) => {
       });
     });
 });
-
-/**
- *tìm sản phẩm người dùng đã đặt (ThangLy test code)
- *@params{userid}
- */
-router.get(`/get/userorderss/:userid`, async (req, res) => {
-  const userOrderList = await Order.find({ user_id: req.params.userid })
-  .populate("user", "name")
-  .populate({
-    path: "orderitems",
-    populate: {
-      path: "product",
-      populate: "categories_id",
-    },
-  });
-
-  if (!userOrderList) {
-    res.status(500).json({ success: false });
-  }
-  res.send(userOrderList);
-});
-
-
-
 
 module.exports = router;
