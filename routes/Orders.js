@@ -76,16 +76,16 @@ router.get("/product-sold/:id", async (req, res) => {
  *tìm sản phẩm người dùng đã đặt
  *@params{userid}
  */
-router.get(`/get/userorders/:userid`, async (req, res) => {
+ router.get(`/get/userorders/:userid`, async (req, res) => {
   const userOrderList = await Order.find({ user_id: req.params.userid })
-    .populate({
-      path: "orderItems",
-      populate: {
-        path: "product",
-        populate: "categories_id",
-      },
-    })
-    .sort({ dateOrdered: -1 });
+  .populate("user", "name")
+  .populate({
+    path: "orderitems",
+    populate: {
+      path: "product",
+      populate: "categories_id",
+    },
+  });
 
   if (!userOrderList) {
     res.status(500).json({ success: false });
