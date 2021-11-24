@@ -9,8 +9,21 @@ var ObjectId = require("mongoose").Types.ObjectId;
  * Lấy tất cả Order va orderitem
  */
 router.get("/", async (req, res) => {
+  // .populate({
+  //   path: "orderItems",
+  //   populate: {
+  //     path: "product",
+  //     populate: "categories_id",
+  //   },
+  // })
   const OrderList = await Order.find()
-    .populate(["user_id", "orderitems"])
+    .populate(["user_id"])
+    .populate({
+      path: "orderitems",
+      populate: {
+        path: "product",
+      },
+    })
     .sort({
       dateOrdered: -1,
     });
@@ -146,9 +159,10 @@ router.post(`/`, async (req, res) => {
   //Tính tổng giá số lượng sản phẩm
   const totalPrices = Promise.all(
     orderItemsIdsResolved.map(async (orderItemId) => {
-      const orderItem = await OrderItem.findById(orderItemId).populate(
-        "product"
-      );
+      const orderItem = await OrderItem.findById(orderItemId).populate([
+        "orderitems",
+        "product",
+      ]);
       console.log(
         "file: Orders.js Log: line 44 Log: orderItemsIdsResolved.map Log: orderItem",
         orderItem

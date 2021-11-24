@@ -113,8 +113,16 @@ router.put(`/:id`, async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).send("Invalid Product Id");
   }
-  const { ten, gia, kichthuoc, mota, ThumbImg, soluong, categoies_id } =
-    req.body;
+  const {
+    ten,
+    gia,
+    kichthuoc,
+    mota,
+    ThumbImg,
+    soluong,
+    product,
+    categoies_id,
+  } = req.body;
 
   const updatedProduct = await Product.findByIdAndUpdate(
     req.params.id,
@@ -125,6 +133,7 @@ router.put(`/:id`, async (req, res) => {
       mota,
       ThumbImg,
       soluong,
+      product,
       categoies_id,
     },
     { new: true }

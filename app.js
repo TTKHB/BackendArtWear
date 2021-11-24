@@ -25,6 +25,7 @@ var LikeRouter = require("./routes/Hot/like");
 var CommentRouter = require("./routes/Hot/comment");
 var CommentLikeRouter = require("./routes/Hot/comment_like");
 var CommentReplyRouter = require("./routes/Hot/comment_reply");
+var NotityTypeRouter = require("./routes/Notification/NotityType");
 
 var usersRoutes = require("./routes/User");
 

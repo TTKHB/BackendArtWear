@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const productSchema = mongoose.Schema({
   ten: {
     type: String,
+    default: "",
   },
   gia: {
     type: Number,
