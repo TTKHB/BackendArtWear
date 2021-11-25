@@ -111,10 +111,14 @@ router.get(`/numberlike/:hot_id`, async (req, res) => {
 
   const likes = await Like.find({ hot_id: req.params.hot_id });
   const countLike = likes.length;
+  console.log(
+    "🚀 ~ file: like.js ~ line 114 ~ router.get ~ countLike",
+    countLike
+  );
 
   //   const productCount = await Product.countDocuments((count) => count);
 
-  if (!countLike) {
+  if (!likes) {
     res.status(500).json({
       success: false,
     });
