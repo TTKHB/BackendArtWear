@@ -14,7 +14,6 @@ const HotSchema = mongoose.Schema({
   dateCreated: {
     type: Date,
     default: Date.now(),
-    required: true,
   },
   content: {
     type: String,
