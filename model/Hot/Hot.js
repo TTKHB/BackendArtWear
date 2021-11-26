@@ -13,7 +13,7 @@ const HotSchema = mongoose.Schema({
   },
   dateCreated: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   content: {
     type: String,
