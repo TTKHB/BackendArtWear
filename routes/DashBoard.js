@@ -16,6 +16,21 @@ router.get("/", async (req, res) => {
 });
 
 //Thêm một dashboard moi by id the loai
+router.post("/", async (req, res) => {
+  let dashboard = new DashBoard({
+    title: req.body.title,
+    Styles: req.body.Styles,
+    theloai_id: req.body.theloai_id,
+  });
+  dashboard = await dashboard.save();
+
+  if (!dashboard)
+    return res.status(400).send("The dashboard cannot be created!");
+
+  res.send(dashboard);
+});
+
+//Thêm một dashboard moi by id the loai
 router.put("/:id", async (req, res) => {
   let dashboard = new DashBoard({
     title: req.body.title,

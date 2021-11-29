@@ -39,7 +39,6 @@ router.get(`/:id`, async (req, res) => {
 
 /**
  *Them Hot
- *còn thiếu cái xử lý ảnh cloudiary
  */
 router.post("/", async (req, res) => {
   let hots = new Hot({
@@ -56,7 +55,6 @@ router.post("/", async (req, res) => {
 /**
  * cập nhật sản phẩm
  * @param {id}
- * *còn thiếu cái xử lý ảnh cloudiary
  */
 router.put(`/:id`, async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {

@@ -18,6 +18,14 @@ const productSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  brand: {
+    type: String,
+    default: null,
+  },
+  styleid: {
+    type: String,
+    default: null,
+  },
   product: {
     type: Array,
     default: [{ mau: "", image: [] }],
