@@ -3,19 +3,19 @@ var router = express.Router();
 const User = require('../model/userModel');
 const bcrypt = require('bcryptjs')
 // Import file tu controller
-const { 
-  createUser, 
-  userSignIn, 
-  signOut, 
+const {
+  createUser,
+  userSignIn,
+  signOut,
   forgotPassword,
   resetPassword,
 } = require("../controllers/userController");
 // Import file check loi dang ki, dang nhap
-const { 
-  validateUserSignUp, 
-  userVlidation, 
-  validateUserSignIn, 
-  validateUserReset 
+const {
+  validateUserSignUp,
+  userVlidation,
+  validateUserSignIn,
+  validateUserReset
 } = require('../middlewares/validation/formcheck');
 const { isAuth } = require('../middlewares/auth');
 
@@ -116,6 +116,52 @@ router.put('/forgot-Password', forgotPassword);
 router.put('/new-Password', resetPassword);
 
 
+router.put("/update/:id", async (req, res) => {
+  console.log("body", req.body);
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      fullname: req.body.fullname,
+      email: req.body.email,
+      avatar: req.body.avatar,
+      phone: req.body.phone,
+      sex: req.body.sex,
+      address: req.body.address,
+      birthday: req.body.birthday,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!user) return res.status(400).send("the user cannot be created!");
+
+  res.send(user);
+});
+
+
+/**
+ * Xóa User bằng id
+ *@param {id}
+ */
+router.delete("/deleteUser/:id", async (req, res) => {
+  User.findByIdAndRemove(req.params.id)
+    .then((userlist) => {
+      if (userlist) {
+        return res.status(200).json({
+          success: true,
+          message: "the user is deleted!",
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "user not found!" });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).json({ success: false, error: err });
+    });
+});
 
 module.exports = router;
 

@@ -27,6 +27,9 @@ var CommentLikeRouter = require("./routes/Hot/comment_like");
 var CommentReplyRouter = require("./routes/Hot/comment_reply");
 var NotityTypeRouter = require("./routes/Notification/NotityType");
 
+var conversationRoute = require("./routes/conversations");
+var messageRoute = require("./routes/messages");
+
 var usersRoutes = require("./routes/User");
 
 //database
@@ -89,6 +92,10 @@ app.use(`${api}/comment_like`, CommentLikeRouter);
 app.use(`${api}/comment_reply`, CommentReplyRouter);
 
 app.use(`${api}/users`, usersRoutes);
+
+//hots
+app.use(`${api}/conversation`, conversationRoute);
+app.use(`${api}/message`, messageRoute);
 
 // app.use(`${api}/orders`, orderRoutes);
 
