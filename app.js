@@ -16,7 +16,6 @@ var categoriesRouter = require("./routes/categories");
 var CartRouter = require("./routes/Cart");
 var ReviewsRouter = require("./routes/Review");
 var OrdersRouter = require("./routes/Orders");
-var NotificationRouter = require("./routes/Notification");
 var DashboardRouter = require("./routes/DashBoard");
 var FavoriteRouter = require("./routes/Favorite");
 var VoucherRouter = require("./routes/Voucher");
@@ -26,6 +25,7 @@ var CommentRouter = require("./routes/Hot/comment");
 var CommentLikeRouter = require("./routes/Hot/comment_like");
 var CommentReplyRouter = require("./routes/Hot/comment_reply");
 var NotityTypeRouter = require("./routes/Notification/NotityType");
+var NotificationHotRouter = require("./routes/Notification/TypeNotification/Notification_Hot");
 
 var conversationRoute = require("./routes/conversations");
 var messageRoute = require("./routes/messages");
@@ -77,7 +77,6 @@ app.use(`${api}/categories`, categoriesRouter);
 app.use(`${api}/carts`, CartRouter);
 app.use(`${api}/reviews`, ReviewsRouter);
 app.use(`${api}/orders`, OrdersRouter);
-app.use(`${api}/notification`, NotificationRouter);
 app.use(`${api}/dashboard`, DashboardRouter);
 app.use(`${api}/favorite`, FavoriteRouter);
 app.use(`${api}/voucher`, VoucherRouter);
@@ -96,6 +95,9 @@ app.use(`${api}/users`, usersRoutes);
 //hots
 app.use(`${api}/conversation`, conversationRoute);
 app.use(`${api}/message`, messageRoute);
+
+app.use(`${api}/notification_hot`, NotificationHotRouter);
+app.use(`${api}/notificationtype`, NotityTypeRouter);
 
 // app.use(`${api}/orders`, orderRoutes);
 

@@ -13,6 +13,10 @@ const Notification_EventSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  status: {
+    type: Number,
+    default: 1,
+  },
   dateCreated: {
     type: Date,
     default: Date.now,
@@ -22,19 +26,13 @@ const Notification_EventSchema = mongoose.Schema({
     ref: "User",
     required: true,
   },
-  hot_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hot",
-    required: true,
-  },
   NotifyType_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "NotifyType",
     required: true,
   },
   hot_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hot",
+    type: String,
     required: true,
   },
 });
