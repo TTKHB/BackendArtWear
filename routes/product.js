@@ -17,7 +17,6 @@ router.post(`/`, async (req, res) => {
     ThumbImg,
     categories_id,
   } = req.body;
-  let productHanldle = [];
 
   let products = new Product({
     ten,
