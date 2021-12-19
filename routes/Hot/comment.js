@@ -103,4 +103,25 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+/**
+ * Lấy lượt comment của bài viết đó băng hot_id
+ */
+router.get(`/numbercomment/:hot_id`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.hot_id)) {
+    return res.status(400).send("Invalid Hot Id");
+  }
+
+  const comments = await Comment.find({ hot_id: req.params.hot_id });
+  const countLike = comments.length;
+
+  if (!comments) {
+    res.status(500).json({
+      success: false,
+    });
+  }
+  res.send({
+    comments: countLike,
+  });
+});
+
 module.exports = router;
