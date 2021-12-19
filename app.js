@@ -45,6 +45,12 @@ var app = express();
 //helpers
 const authJwt = require("./helper/jwt");
 const errorHandler = require("./helper/error-handler");
+const server = require("http").createServer();
+const io = require("socket.io")(server);
+
+// io.on("connection", () => {
+//   console.log("test socket");
+// });
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

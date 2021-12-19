@@ -10,6 +10,7 @@ router.get("/", async (req, res) => {
   const notifyList = await NotificationHot.find().populate([
     "user_id",
     "NotifyType_id",
+    "wholiked",
   ]);
 
   if (!notifyList) {
@@ -18,6 +19,46 @@ router.get("/", async (req, res) => {
     });
   }
   res.status(200).send(notifyList);
+});
+
+// find by id notification hot
+router.get(`/:id`, async (req, res) => {
+  const id = req.params.id;
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(400).send("Invalid notify id");
+  }
+
+  const notify = await NotificationHot.findById(id)
+    .populate(["user_id", "NotifyType_id", "wholiked"])
+    .sort({ dateCreated: -1 });
+
+  if (!notify) {
+    res.status(500).json({
+      success: false,
+      message: "Notification not found",
+    });
+  }
+  res.send(notify);
+});
+
+// tìm bằng product bằng user_id
+router.get(`/user/:userid`, async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.userid)) {
+    return res.status(400).send("Invalid user id");
+  }
+  const user_id = req.params.userid;
+
+  const notify = await NotificationHot.find({ user_id: user_id })
+    .populate(["user_id", "NotifyType_id", "wholiked"])
+    .sort({ dateCreated: -1 });
+
+  if (!notify) {
+    res.status(500).json({
+      success: false,
+      message: "Notification not found",
+    });
+  }
+  res.send(notify);
 });
 
 /**

@@ -6,8 +6,13 @@ const Notification_hotSchema = mongoose.Schema({
     default: "",
   },
   wholiked: {
-    type: String,
-    default: "",
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+  status: {
+    type: Number,
+    default: 1,
   },
   dateCreated: {
     type: Date,
