@@ -15,6 +15,18 @@ const cartSchema = mongoose.Schema({
     ref: "User",
     required: true,
   },
+  imageSp: {
+    type: String,
+    default: "",
+  },
+  size: {
+    type: String,
+    default: "",
+  },
+  color: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("Cart", cartSchema);

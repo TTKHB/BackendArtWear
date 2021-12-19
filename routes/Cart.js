@@ -48,6 +48,9 @@ router.post("/", async (req, res) => {
     amount: req.body.amount,
     product_id: req.body.product_id,
     user_id: req.body.user_id,
+    imageSp: req.body.imageSp,
+    size: req.body.size,
+    color: req.body.color,
   });
   cart = await cart.save();
 
@@ -97,6 +100,32 @@ router.put(`/:id`, async (req, res) => {
     { new: true }
   );
 
+  if (!updatedCart) {
+    return res.status(500).send("the product cannot be updated!");
+  }
+
+  res.send(updatedCart);
+});
+
+
+/**
+ * cập nhật,image ,size, mau sac san pham
+ * @param {id}
+ */
+ router.put(`/updateItem/:id`, async (req, res) => {
+  const { imageSp, size, color } = req.body;
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).send("Invalid Cart Id");
+  }
+  const updatedCart = await Cart.findByIdAndUpdate(
+    req.params.id,
+    {
+      imageSp,
+      size,
+      color,
+    },
+    { new: true }
+  );
   if (!updatedCart) {
     return res.status(500).send("the product cannot be updated!");
   }
