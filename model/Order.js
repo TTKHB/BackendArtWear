@@ -21,6 +21,18 @@ const orderSchema = mongoose.Schema({
       default: "",
     },
   ],
+  imageSp: {
+    type: String,
+    default: "image",
+  },
+  size: {
+    type: String,
+    default: "size",
+  },
+  color: {
+    type: String,
+    default: "color",
+  },
   country: {
     type: String,
     default: "VN",
