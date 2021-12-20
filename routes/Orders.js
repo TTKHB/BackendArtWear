@@ -1,9 +1,21 @@
 const Order = require("../model/Order");
+
 const OrderItem = require("../model/OrderItems");
+const Status = require("../constraint/OrderSatus");
+const {
+  removeDuplicatesByDate,
+  removePropertiesFromArray,
+  removeObjectIdByObject,
+} = require("../utils/Method");
+const {
+  AggregateSalesOfDay,
+  AggregateSalesOfDayByStatus,
+} = require("../helper/Aggregate/AggregateSalesOfDay");
 
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+
 var ObjectId = require("mongoose").Types.ObjectId;
 /**
  * Lấy tất cả Order va orderitem
@@ -249,7 +261,7 @@ router.get("/get/totalsales", async (req, res) => {
       $group: {
         _id: null,
         totalsales: {
-          $sum: "$totalPrice",
+          sum: "$totalPrice",
         },
       },
     },
@@ -261,6 +273,140 @@ router.get("/get/totalsales", async (req, res) => {
 
   res.send({
     totalsales: totalSales.pop().totalsales,
+  });
+});
+router.get("/get/statistics_everyday", async (req, res) => {
+  const orders = await Order.find({})
+    .select("dateOrdered")
+    .sort({ dateOrdered: 1 });
+
+  const orderToJson = JSON.stringify(orders);
+
+  const orderAfterRemoveId = removePropertiesFromArray(orderToJson);
+  const fullDates = removeDuplicatesByDate(orderAfterRemoveId);
+  console.log(
+    "🚀 ~ file: Orders.js ~ line 281 ~ router.get ~ fullDates",
+    fullDates
+  );
+  // console.log(
+  //   "🚀 ~ file: Orders.js ~ line 281 ~ router.get ~ fullDates",
+  //   fullDates
+  // );
+
+  let resultToTal = [];
+  for (var i in fullDates) {
+    const day = fullDates[i];
+    console.log("🚀 ~ file: Orders.js ~ line 293 ~ router.get ~ day", day);
+    const totalSalesOfDay = await AggregateSalesOfDay({
+      day: new Date(day),
+      model: Order,
+    }); //type Object
+
+    const totalAfterRemoveId = removeObjectIdByObject(totalSalesOfDay);
+    console.log(
+      "🚀 ~ file: Orders.js ~ line 306 ~ router.get ~ totalAfterRemoveId",
+      totalAfterRemoveId
+    );
+
+    resultToTal.push({
+      date: day,
+      total: totalSalesOfDay,
+    }); // type Object
+  }
+
+  if (!resultToTal) {
+    return res.status(400).send("The order sales cannot be generated");
+  }
+
+  res.send({
+    resultToTal,
+  });
+});
+
+router.get("/get/statistic_status", async (req, res) => {
+  const orders = await Order.find({})
+    .select("dateOrdered")
+    .sort({ dateOrdered: 1 });
+
+  const orderToJson = JSON.stringify(orders);
+
+  const orderAfterRemoveId = removePropertiesFromArray(orderToJson);
+  const fullDates = removeDuplicatesByDate(orderAfterRemoveId);
+  console.log(
+    "🚀 ~ file: Orders.js ~ line 281 ~ router.get ~ fullDates",
+    fullDates
+  );
+  // console.log(
+  //   "🚀 ~ file: Orders.js ~ line 281 ~ router.get ~ fullDates",
+  //   fullDates
+  // );
+
+  let resultToTal = [];
+  for (var i in fullDates) {
+    const day = fullDates[i];
+    console.log("🚀 ~ file: Orders.js ~ line 293 ~ router.get ~ day", day);
+    const totalOrderProcessing = await AggregateSalesOfDayByStatus({
+      day: new Date(day),
+      model: Order,
+      status: Status.ORDERPROCESSING,
+    }); //type Object
+    console.log(
+      "🚀 ~ file: Orders.js ~ line 349 ~ router.get ~ totalOrderProcessing",
+      totalOrderProcessing
+    );
+    const totalWaitForPay = await AggregateSalesOfDayByStatus({
+      day: new Date(day),
+      model: Order,
+      status: Status.WAITFORPAY,
+    }); //type Object
+    const totalShipping = await AggregateSalesOfDayByStatus({
+      day: new Date(day),
+      model: Order,
+      status: Status.SHIPPING,
+    }); //type Object
+    const totalDeLivered = await AggregateSalesOfDayByStatus({
+      day: new Date(day),
+      model: Order,
+      status: Status.DELIVERED,
+    }); //type Object
+
+    //total after remove id
+    const resultProcessing = removeObjectIdByObject(totalOrderProcessing);
+    console.log(
+      "🚀 ~ file: Orders.js ~ line 371 ~ router.get ~ resultProcessing",
+      resultProcessing
+    );
+    const resultWaitForPay = removeObjectIdByObject(totalWaitForPay);
+    const resultShipping = removeObjectIdByObject(totalShipping);
+    const resultDeLivered = removeObjectIdByObject(totalDeLivered);
+
+    resultToTal.push({
+      date: day,
+      processing: {
+        name: "xử lý đơn hàng",
+        total: resultProcessing,
+      },
+      waitforpay: {
+        name: "đang chờ thanh toán",
+        total: resultWaitForPay,
+      },
+      shipping: {
+        name: "đang chờ giao hàng",
+        total: resultShipping,
+      },
+      delivered: {
+        name: "Đã giao hàng",
+        total: resultDeLivered,
+      },
+    }); // type Object
+  }
+
+  if (!resultToTal) {
+    return res.status(400).send("The order sales cannot be generated");
+  }
+
+  res.send({
+    resultToTal,
   });
 });
 
